@@ -56,20 +56,6 @@ function Calculator(){
         }
     }
 
-    async function evaluateExpression(){ 
-        let newExpression = currentExpression + currentValue;
-        if(currentExpression[currentExpression.length-1]=="=")
-            newExpression = currentValue;
-        
-        const response = await requestSolution(newExpression).catch((e)=>{ 
-            ErrorDisplay()
-            return;
-        });
-        setCurrentValue(String(response.data));
-        setCurrentExpression(newExpression+"=");
-        isTypingRef.current = false;
-    }
-
     async function handlePercentage() {
         let newExpression = currentValue+"/100";
         const response = await requestSolution(newExpression).catch((e)=>{ 
@@ -105,6 +91,8 @@ function Calculator(){
     }
     
     async function appendOperator(opertor){
+        if(currentExpression[currentExpression.length-1]=="=" && opertor=="=") return;
+
         let newExpression = currentExpression + currentValue;
         if(currentExpression[currentExpression.length-1]=="=")
             newExpression = currentValue;
