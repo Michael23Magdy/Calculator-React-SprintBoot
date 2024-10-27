@@ -8,11 +8,13 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class CalculatorController {
     @GetMapping("/calculate")
     public ResponseEntity<Double> calculate(@RequestParam String expression){
         try {
+            System.out.println(expression);
             Expression e = new ExpressionBuilder(expression).build();
             return new ResponseEntity<>(e.evaluate(), HttpStatus.OK);
         } catch (Exception e){
