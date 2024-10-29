@@ -12,11 +12,30 @@ function Calculator(){
     const [currentValue, setCurrentValue] = useState("0");
     const [currentExpression, setCurrentExpression] = useState("");
     const isTypingRef = useRef(false);
+    const isError = useRef(false);
 
-
+    useEffect(() => {
+        // Function to handle key presses
+        const handleKeyDown = (event) => {
+            console.log(`handle key down: ${currentValue}`);
+            if(operations.includes(String(event.key))){
+                handleClick(String(event.key));
+            }
+        };
+    
+        // Attach event listener
+        window.addEventListener('keydown', handleKeyDown);
+    
+        // Clean up the event listener on unmount
+        return () => {
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+    });
     
     function handleClick(operation){
-        if(operation == "C" || operation=="CE") clearDisplay();
+        console.log(`handle click down: ${currentValue}`);
+        if(isError.current) clearDisplay();
+        else if(operation == "C" || operation=="CE") clearDisplay();
         else if(operation=="X")     deleteLast()
         else if(operation=="+/-")   setCurrentValue(c=>String(-c));
         else if(operation=="%")     handlePercentage();
@@ -32,6 +51,7 @@ function Calculator(){
         setCurrentValue("0");
         setCurrentExpression("");
         isTypingRef.current=false;
+        isError.current=false;
     }
 
     function deleteLast(){
@@ -91,6 +111,7 @@ function Calculator(){
     }
     
     async function appendOperator(opertor){
+        console.log(`append operator: ${currentValue}`);
         if(currentExpression[currentExpression.length-1]=="=" && opertor=="=") return;
 
         let newExpression = currentExpression + currentValue;
@@ -109,6 +130,7 @@ function Calculator(){
     function ErrorDisplay(){
         setCurrentValue("Error!");
         isTypingRef.current = false;
+        isError.current = true;
         setCurrentExpression("");
     }
 

@@ -69,3 +69,8 @@ body{
 .calculator-buttons button:hover{
   background-color: hsla(0, 0%, 40%, 0.23);
 }
+.calculator-buttons button:focus{
+  background-color: hsla(69, 71%, 49%, 0.23);
+  border: none;
+  outline: none;
+}
