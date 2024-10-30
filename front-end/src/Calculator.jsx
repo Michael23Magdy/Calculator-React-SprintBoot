@@ -17,10 +17,13 @@ function Calculator(){
     useEffect(() => {
         // Function to handle key presses
         const handleKeyDown = (event) => {
-            console.log(`handle key down: ${currentValue}`);
+            console.log(`handle key down: ${event.key}`);
             if(operations.includes(String(event.key))){
                 handleClick(String(event.key));
             }
+            else if (event.key == "Backspace") handleClick("X");
+            else if (event.key == "ُEnter") handleClick("=");
+            else if (event.key == "ُDelete") handleClick("C");
         };
     
         // Attach event listener
@@ -33,7 +36,6 @@ function Calculator(){
     });
     
     function handleClick(operation){
-        console.log(`handle click down: ${currentValue}`);
         if(isError.current) clearDisplay();
         else if(operation == "C" || operation=="CE") clearDisplay();
         else if(operation=="X")     deleteLast()
@@ -111,7 +113,6 @@ function Calculator(){
     }
     
     async function appendOperator(opertor){
-        console.log(`append operator: ${currentValue}`);
         if(currentExpression[currentExpression.length-1]=="=" && opertor=="=") return;
 
         let newExpression = currentExpression + currentValue;
